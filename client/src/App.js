@@ -1,40 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import axios from 'axios';
 
-const getTodos = () => {
-  return fetch('/api', {
-    method: 'get',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }).then(res => res.json());
-};
-
-const saveTodo = todo => {
-  const postParams = {
-    body: JSON.stringify({ todo }),
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-    },
-  };
-  return fetch('/api/save', postParams).then(res => {
-    if (res.status >= 200 && res.status < 300) {
-      return res.json();
-    } else {
-      throw res;
-    }
-  });
-};
+// const saveTodo = todo => {
+//   const postParams = {
+//     body: JSON.stringify({ todo }),
+//     method: 'POST',
+//     headers: {
+//       'content-type': 'application/json',
+//     },
+//   };
+//   return fetch('/api/save', postParams).then(res => {
+//     if (res.status >= 200 && res.status < 300) {
+//       return res.json();
+//     } else {
+//       throw res;
+//     }
+//   });
+// };
 
 const App = () => {
   const [todoList, setTodoList] = useState([]);
   const [todo, setTodo] = useState('');
 
-  useEffect(() => {
-    getTodos()
-      .then(data => setTodoList(data))
+  const getTodos = () => {
+    axios
+      .get('/api')
+      .then(res => {
+        const data = res.data;
+        setTodoList(data);
+      })
       .catch(err => console.log(err));
+  };
+
+  const saveTodo = todo => {
+    const payload = { todo };
+
+    axios({
+      url: '/api/save',
+      method: 'POST',
+      data: payload,
+    })
+      .then(() => {
+        console.log('Data has been sent to the server');
+        getTodos();
+      })
+      .catch(() => {
+        console.log('Internal server error');
+      });
+  };
+
+  useEffect(() => {
+    getTodos();
   }, []);
 
   const handleSubmit = e => {
@@ -42,14 +59,7 @@ const App = () => {
     if (!todo) {
       alert('You can add empty field');
     } else {
-      //save data to db and update todoList
-      saveTodo(todo)
-        .then(data => {
-          setTodo('');
-          return getTodos();
-        })
-        .then(data => setTodoList(data))
-        .catch(err => console.log('error occured', err));
+      saveTodo(todo);
     }
   };
 

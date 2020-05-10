@@ -9,7 +9,7 @@
     "install-client": "cd client && npm install",
     "heroku-postbuild": "npm run install-client && npm run build",
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "concurrently -n 'server,client' -c 'red,green'  \"nodemon server.js\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
@@ -17,7 +17,8 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.9.13"
+    "mongoose": "^5.9.13",
+    "concurrently": "^5.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"

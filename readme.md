@@ -14,7 +14,7 @@
 	npm install
 	```
 - make sure you have Mongo db installed.\
-	if you use Docker, alternatively use Docker image "mongo"
+	if you use Docker, alternatively, run docker "mongo" image with commands:
 	```
 	docker run -i -t --rm -p 27017:27017 --name "mongo_db" --network=bridge mongo
 	```

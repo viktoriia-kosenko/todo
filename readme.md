@@ -14,9 +14,9 @@
 	npm install
 	```
 - make sure you have Mongo db installed.\
-	if you use Docker, alternatively, run docker "mongo" image with commands:
+	if you use Docker, alternatively, downalod "mongo" image with command:
 	```
-	docker run -i -t --rm -p 27017:27017 --name "mongo_db" --network=bridge mongo
+	docker pull mongo
 	```
 - crete 'todo_app' db in Mongo server\
   you may want to use free Mondo GUI tool: [Robo 3T](https://robomongo.org/download)
